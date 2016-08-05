@@ -54,6 +54,10 @@ module Redirector
         end
       end
 
+      def request_scheme
+        env.ssl? ? 'https' : 'http'
+      end
+      
       def request_host
         env['HTTP_HOST'].split(':').first
       end
@@ -80,7 +84,7 @@ module Redirector
 
       def redirect_uri
         destination_uri.tap do |uri|
-          uri.scheme ||= 'http'
+          uri.scheme ||= request_scheme
           uri.host   ||= request_host
           uri.port   ||= request_port if request_port.present?
           uri.query  ||= env['QUERY_STRING'] if Redirector.preserve_query
