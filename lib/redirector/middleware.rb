@@ -55,9 +55,7 @@ module Redirector
       end
 
       def request_scheme
-        puts "=======> #{env}"
-        # env.ssl? ? 'https' : 'http'
-        'http'
+        env['HTTPS'] == 'on' || env['HTTP_X_FORWARDED_PROTO'] == 'https' ? 'https' : 'http'
       end
       
       def request_host
